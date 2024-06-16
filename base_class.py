@@ -26,7 +26,7 @@ class UrTube:
         #nick = input("Введите логин: ")
         #passw = input("Пароль: ")
         if nick in self.users.keys():  #and passw == self.users[nick][0]:
-            self.current_user = {nick: self.users[nick]}
+            self.current_user = nick
         else:
             print("wrong", self.users[nick][0])
 
@@ -57,8 +57,9 @@ class UrTube:
         if self.current_user is None:
             print('Войдите в аккаунт, чтобы смотреть видео')
 
-        if self.videos[movie_name][2] is False and self.current_user >= 18:
+        if self.videos[movie_name][2] is False and self.users[self.current_user][1] >= 18:
             print('Вам нет 18 лет, пожалуйста покиньте страницу')
+
         else:
             for i in range(1, self.videos[movie_name][0] + 1):
                 print(i, end=" ")
