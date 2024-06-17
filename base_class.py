@@ -1,4 +1,4 @@
-from time import sleep
+from time import time, sleep
 
 
 class User:
@@ -23,9 +23,7 @@ class UrTube:
         self.videos = {}
 
     def log_in(self, nick, passw):
-        #nick = input("Введите логин: ")
-        #passw = input("Пароль: ")
-        if nick in self.users.keys():  #and passw == self.users[nick][0]:
+        if nick in self.users.keys() and passw == self.users[nick][0]:
             self.current_user = nick
         else:
             print("wrong", self.users[nick][0])
@@ -54,16 +52,20 @@ class UrTube:
         return movie_name_list
 
     def watch_video(self, movie_name):
-        if self.current_user is None:
-            print('Войдите в аккаунт, чтобы смотреть видео')
+        if self.current_user is not None:
 
-        if self.videos[movie_name][2] is False and self.users[self.current_user][1] >= 18:
-            print('Вам нет 18 лет, пожалуйста покиньте страницу')
+            if self.videos[movie_name][2] is True and self.users[self.current_user][1] <= 18:
+                print('Вам нет 18 лет, пожалуйста покиньте страницу')
+                self.log_out()
+
+            else:
+                for i in range(1, self.videos[movie_name][0] + 1):
+                    print(i, end=" ")
+                  #  time.sleep(1)
+                print("Конец видео")
 
         else:
-            for i in range(1, self.videos[movie_name][0] + 1):
-                print(i, end=" ")
-            print("Конец видео")
+            print('Войдите в аккаунт, чтобы смотреть видео')
 
 
 ur = UrTube()
