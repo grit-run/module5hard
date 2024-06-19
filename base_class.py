@@ -66,7 +66,7 @@ class UrTube:
 
             if self.get_videos(movie_name):
                 print(movie_name)
-                if self.videos[movie_name][2] is True and self.users[self.current_user][1] <= 18:
+                if self.videos[movie_name][2] and self.users[self.current_user][1] <= 18:
                     print('Вам нет 18 лет, пожалуйста покиньте страницу')
                     self.log_out()
 
