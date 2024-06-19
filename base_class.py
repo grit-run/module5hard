@@ -7,6 +7,14 @@ class User:
         self.password = password
         self.age = age
 
+    def __hash__(self):
+        return hash(self.password)
+
+    def __eq__(self, other):
+        if isinstance(User, other):
+            return self.password == other.password
+        return False
+
 
 class Video:
     def __init__(self, title, duration, time_now=0, adult_mode=False):
@@ -23,7 +31,7 @@ class UrTube:
         self.videos = {}
 
     def log_in(self, nick, passw):
-        if nick in self.users.keys() and passw == self.users[nick][0]:
+        if nick in self.users.keys() and self.users[nick][0] == passw:
             self.current_user = nick
         else:
             print("wrong", self.users[nick][0])
@@ -31,13 +39,15 @@ class UrTube:
     def log_out(self):
         self.current_user = None
 
-    def register(self, nick, passw, age):
-        if nick not in self.users.keys():
-            self.users[nick] = passw, age
-            self.log_in(nick, passw)
+    def register(self, nickname, password, age):
+        user = User(nickname, password, age)
+        if user.nickname not in self.users.keys():
+            self.users[user.nickname] = [user.password, user.age]
+            self.log_in(nickname, password)
         else:
-            print('Пользователь {} уже существет'.format(nick))
+            print('Пользователь {} уже существет'.format(nickname))
 
+    #
     def add(self, *args):
         for arg in args:
             if isinstance(arg, Video):
@@ -53,6 +63,7 @@ class UrTube:
 
     def watch_video(self, movie_name):
         if self.current_user is not None:
+            print(self.current_user, self.users[self.current_user][1], self.videos[movie_name][2])
 
             if self.videos[movie_name][2] is True and self.users[self.current_user][1] <= 18:
                 print('Вам нет 18 лет, пожалуйста покиньте страницу')
@@ -61,7 +72,7 @@ class UrTube:
             else:
                 for i in range(1, self.videos[movie_name][0] + 1):
                     print(i, end=" ")
-                  #  time.sleep(1)
+                #  time.sleep(1)
                 print("Конец видео")
 
         else:
