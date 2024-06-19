@@ -63,18 +63,21 @@ class UrTube:
 
     def watch_video(self, movie_name):
         if self.current_user is not None:
-            print(self.current_user, self.users[self.current_user][1], self.videos[movie_name][2])
 
-            if self.videos[movie_name][2] is True and self.users[self.current_user][1] <= 18:
-                print('Вам нет 18 лет, пожалуйста покиньте страницу')
-                self.log_out()
+            if self.get_videos(movie_name):
+                print(movie_name)
+                if self.videos[movie_name][2] is True and self.users[self.current_user][1] <= 18:
+                    print('Вам нет 18 лет, пожалуйста покиньте страницу')
+                    self.log_out()
+
+                else:
+                    for i in range(1, self.videos[movie_name][0] + 1):
+                        print(i, end=" ")
+                        sleep(0.5)
+                    print("Конец видео")
 
             else:
-                for i in range(1, self.videos[movie_name][0] + 1):
-                    print(i, end=" ")
-                #  time.sleep(1)
-                print("Конец видео")
-
+                print("Такого фильма нет")
         else:
             print('Войдите в аккаунт, чтобы смотреть видео')
 
@@ -103,5 +106,6 @@ ur.watch_video('Для чего девушкам парень программи
 ur.register('vasya_pupkin', 'F8098FM8fjm9jmi', 55)
 print(ur.current_user)
 
+ur.watch_video("Странные дни")        # доп.проверка
 # Попытка воспроизведения несуществующего видео
 ur.watch_video('Лучший язык программирования 2024 года!')
